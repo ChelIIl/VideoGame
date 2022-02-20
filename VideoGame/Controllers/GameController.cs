@@ -1,46 +1,61 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VideoGame.Context;
+using VideoGame.Services;
 using VideoGame.Models;
 
 namespace VideoGame.Controllers
 {
     public class GameController : Controller
     {
-        ApplicationDbContext db;
-        public GameController(ApplicationDbContext _db)
+        IGameServices gs;
+
+        public GameController(IGameServices _gs)
         {
-            db = _db;
+            gs = _gs;
+        }
+
+        public IActionResult Index()
+        {
+            return View(gs.GetAllGames());
+        }
+
+        public IActionResult Get(int id)
+        {
+            return Ok(gs.GetGame(id));
+        }
+
+        public IActionResult Delete(int id)
+        {
+            gs.DeleteGame(id);
+            return View("Index", gs.GetAllGames());
+        }
+         
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Game game)
+        {
+            gs.CreateGame(game);
+            return View("Index", gs.GetAllGames());
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Edit(int id)
         {
-            var games = db.Games.Include(g => g.Studio);
-
-            return View(games.ToList());
+            return View(gs.GetGame(id));
         }
 
-        //public IActionResult GetAll()
-        //{
-        //    IEnumerable<Game> games = db.Games.Select(g => g).ToList();
-
-        //    return View(games);
-        //}
-
-        //[HttpGet("{id}")]
-        //public IActionResult Get(int id)
-        //{
-        //    Game game = db.Games.FirstOrDefault(g => g.Id == id);
-
-        //    if(game == null)
-        //    {
-        //        return View("Index");
-        //    }
-        //    else
-        //    {
-        //        return View(game);
-        //    }
-        //}
+        [HttpPost]
+        public IActionResult Edit(Game game)
+        {
+            gs.UpdateGame(game);
+            return View("Index", gs.GetAllGames());
+        }
     }
 }

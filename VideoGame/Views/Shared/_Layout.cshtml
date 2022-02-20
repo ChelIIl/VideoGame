@@ -11,6 +11,10 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+            @if (IsSectionDefined("scripts"))
+            {
+                RenderSection("scripts");
+            }
         </main>
     </div>
 

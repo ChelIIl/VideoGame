@@ -1,27 +1,58 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using VideoGame.Context;
 using VideoGame.Models;
 
 namespace VideoGame.Services
 {
-    public class GameServices
+    public class GameServices : IGameServices
     {
-        ApplicationDbContext db;
+        private ApplicationDbContext db;
+
         public GameServices(ApplicationDbContext _db)
         {
             db = _db;
         }
 
-        [HttpGet]
-        public IEnumerable<Game> GetAll()
+        [HttpPut]
+        public void CreateGame(Game game)
         {
-            return (db.Games.Select(g => g).ToList());
+            if (game != null)
+            {
+                db.Add(game);
+                db.SaveChanges();
+            }
         }
 
-        [HttpGet("{id}")]
-        public IEnumerable<Game> Get(int id)
+        public void DeleteGame(int id)
         {
-            yield return (db.Games.FirstOrDefault(g => g.Id == id));
+            Game game = db.Games.FirstOrDefault(g => g.Id == id);
+            if (game != null)
+            {
+                db.Remove(game);
+                db.SaveChanges();
+            }
+        }
+        [HttpGet]
+        public IEnumerable<Game> GetAllGames()
+        {
+            return db.Games.Select(g => g).ToList();
+        }
+        [HttpGet("{id}")]
+        public Game GetGame(int id)
+        {
+            return db.Games.FirstOrDefault(g => g.Id == id);
+        }
+
+        public IEnumerable<Game> GetGameByGenre(string genre)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateGame(Game game)
+        {
+            db.Update(game);
+            db.SaveChanges();
         }
     }
 }

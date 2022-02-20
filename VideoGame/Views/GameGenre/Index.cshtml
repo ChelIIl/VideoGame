@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VideoGame.Models.Game>
+﻿@model IEnumerable<VideoGame.Models.GameGenre>
 
 @{
     ViewData["Title"] = "Games";
@@ -16,13 +16,10 @@
                 @Html.DisplayNameFor(model => model.Dadd)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Game_name)
+                @Html.DisplayNameFor(model => model.Game)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Game_act)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Studio)
+                @Html.DisplayNameFor(model => model.Genre)
             </th>
             <th></th>
         </tr>
@@ -34,10 +31,13 @@
                 @Html.DisplayFor(modelItem => item.Dadd)
             </td>
             <td>
-                <a asp-action="Get" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Game_name)</a>
+                @Html.DisplayFor(modelItem => item.Game.Game_name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Game_act)
+                @foreach (var gen in ViewBag.Genres)
+                {
+                    @Html.DisplayFor(modelItem => @gen)
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

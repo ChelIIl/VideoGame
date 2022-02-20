@@ -12,7 +12,6 @@ namespace VideoGame.Context
 
         public DbSet<Game> Games { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        public DbSet<Studio> Studios { get; set; }
         public DbSet<GameGenre> GameGenres { get; set; }
     }
 }

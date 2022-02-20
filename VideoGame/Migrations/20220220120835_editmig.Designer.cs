@@ -12,8 +12,8 @@ using VideoGame.Context;
 namespace VideoGame.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220220002836_createDB")]
-    partial class createDB
+    [Migration("20220220120835_editmig")]
+    partial class editmig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,12 +41,10 @@ namespace VideoGame.Migrations
                     b.Property<string>("Game_name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StudioId")
-                        .HasColumnType("int");
+                    b.Property<string>("Studio")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StudioId");
 
                     b.ToTable("Games");
                 });
@@ -100,37 +98,6 @@ namespace VideoGame.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-                });
-
-            modelBuilder.Entity("VideoGame.Models.Studio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Dadd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Studio_act")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Studio_name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Studios");
-                });
-
-            modelBuilder.Entity("VideoGame.Models.Game", b =>
-                {
-                    b.HasOne("VideoGame.Models.Studio", "Studio")
-                        .WithMany()
-                        .HasForeignKey("StudioId");
-
-                    b.Navigation("Studio");
                 });
 
             modelBuilder.Entity("VideoGame.Models.GameGenre", b =>
